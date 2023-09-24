@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.miketaxy.SocialNetwork.model.chat.ChatMessage;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,20 +14,22 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 
 @RestController
-@RequestMapping("/home")
 @RequiredArgsConstructor
 public class MainController {
 
-    @GetMapping
-    public String userData(Principal principal) {
-        return principal.getName();
+    @MessageMapping("/chat.sendMessage")
+    @SendTo("/topic/public")
+    public ChatMessage sendMessage(@Payload ChatMessage chatMessage) {
+        return chatMessage;
     }
 
-    @GetMapping("/admin")
-    public String adminData() {
-        return "Admin data";
+    @MessageMapping("/chat.addUser")
+    @SendTo("/topic/public")
+    public ChatMessage addUser(@Payload ChatMessage chatMessage, SimpMessageHeaderAccessor headerAccessor, Principal principal){
+        //TODO: Connect security and websocket
+        headerAccessor.getSessionAttributes().put("username", headerAccessor.getUser());
+        return chatMessage;
     }
-
 }
 
 
