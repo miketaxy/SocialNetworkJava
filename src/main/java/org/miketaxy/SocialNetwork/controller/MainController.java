@@ -25,7 +25,7 @@ public class MainController {
 
     @MessageMapping("/chat.addUser")
     @SendTo("/topic/public")
-    public ChatMessage addUser(@Payload ChatMessage chatMessage, SimpMessageHeaderAccessor headerAccessor, Principal principal){
+    public ChatMessage addUser(@Payload ChatMessage chatMessage, SimpMessageHeaderAccessor headerAccessor){
         //TODO: Connect security and websocket
         headerAccessor.getSessionAttributes().put("username", headerAccessor.getUser());
         return chatMessage;

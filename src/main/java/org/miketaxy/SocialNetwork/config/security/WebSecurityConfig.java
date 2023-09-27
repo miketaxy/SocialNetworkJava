@@ -31,7 +31,6 @@ public class WebSecurityConfig {
                         auth
                                 .requestMatchers(antMatcher("/auth")).permitAll()
                                 .requestMatchers(antMatcher("/register")).permitAll()
-                                .requestMatchers(antMatcher("/ws")).permitAll()
                                 .anyRequest().authenticated())
                 .sessionManagement(se->se.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(ex->ex.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
