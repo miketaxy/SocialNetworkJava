@@ -31,7 +31,7 @@ public class WebSecurityConfig {
                         auth
                                 .requestMatchers(antMatcher("/auth")).permitAll()
                                 .requestMatchers(antMatcher("/register")).permitAll()
-                                .anyRequest().authenticated())
+                                .anyRequest().permitAll())
                 .sessionManagement(se->se.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(ex->ex.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
